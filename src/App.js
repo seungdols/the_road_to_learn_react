@@ -21,6 +21,12 @@ const list = [
   },
 ];
 
+const name = 'seungdols';
+
+const user = {
+  name,
+};
+
 class App extends Component {
   constructor(props) {
     super(props);
