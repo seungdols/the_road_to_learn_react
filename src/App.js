@@ -34,7 +34,28 @@ class App extends Component {
       list: list,
       seungdols: 'seungdols',
     };
+
+    this.onDismiss = this.onDismiss.bind(this);
   }
+
+  onDismiss(id) {
+
+    // const updatedList = this.state.list.filter(function isNotId() {
+    //   return item.objectID !== id;
+    // });
+
+    // function isNotId(id) {
+    //   return item.objectID !== id;
+    // }
+
+    // const updatedList = this.state.list.filter(isNotId);
+
+    const isNotId = item => item.objectID !== id;
+    const updatedList = this.state.list.filter(isNotId);
+
+    this.setState({list: updatedList});
+  }
+
   render() {
     return (
       <div className="App">
@@ -48,6 +69,11 @@ class App extends Component {
             <span>{item.points}</span>
             <br />
             <span>{this.state.seungdols}</span>
+            <span>
+              <button onClick={() => this.onDismiss(item.objectID)} type="button">
+                dismiss
+              </button>
+            </span>
           </div>
         )}
       </div>
