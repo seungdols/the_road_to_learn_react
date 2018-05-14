@@ -54,6 +54,7 @@ class App extends Component {
     const updatedList = this.state.list.filter(isNotId);
 
     this.setState({list: updatedList});
+    console.log(this);
   }
 
   render() {
