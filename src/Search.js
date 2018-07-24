@@ -1,9 +1,11 @@
 import React, {Component} from 'react'
 
-const Search = ({value, onChange, children}) =>
+const Search = ({value, onChange, onSubmit, children}) =>
     <form>
-    {children}
-            <input type="text" value={value} onChange={onChange}/>
+    <input type="text" value={value} onChange={onChange}/>
+    <button type="submit">
+        {children}
+    </button>
     </form>
 
 export default Search

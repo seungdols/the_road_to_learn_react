@@ -19,16 +19,22 @@ class App extends Component {
     };
 
     this.setSearchTopStories = this.setSearchTopStories.bind(this)
-    this.onSearchChange = this.onSearchChange.bind(this);
-    this.onDismiss = this.onDismiss.bind(this);
+    this.onSearchChange = this.onSearchChange.bind(this)
+    this.onSearchSubmit = this.onSearchSubmit.bind(this)
+    this.onDismiss = this.onDismiss.bind(this)
   }
 
   setSearchTopStories(result) {
     this.setState({result})
   }
 
+
   componentDidMount() {
     const { searchTerm } = this.state
+    this.fetchSearchTopStories(searchTerm)
+  }
+
+  fetchSearchTopStories(searchTerm) {
     fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}`)
       .then(response => response.json())
       .then(result => this.setSearchTopStories(result))
@@ -47,6 +53,12 @@ class App extends Component {
     this.setState({searchTerm: event.target.value})
   }
 
+  onSearchSubmit(event) {
+      const { searchTerm } = this.state
+      this.fetchSearchTopStories(searchTerm)
+      event.preventDefault()
+  }
+
   render() {
     const { searchTerm, result } = this.state;
 
@@ -57,7 +69,7 @@ class App extends Component {
     return (
       <div className="page">
         <div className="interactions">
-          <Search value={searchTerm} onChange={this.onSearchChange}>Search</Search>
+          <Search value={searchTerm} onChange={this.onSearchChange} onSubmit={this.onSearchSubmit}>Search</Search>
         </div>
           { result && <Table list={result.hits} pattern={searchTerm} onDismiss={this.onDismiss} /> }
       </div>
