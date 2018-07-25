@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import Button from './Button.js'
+import Button from '../Button'
 
 const isSearched = searchTerm => item => item.title.toLowerCase().includes(searchTerm.toLowerCase());
 
