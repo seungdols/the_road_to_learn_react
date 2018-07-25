@@ -20,7 +20,8 @@ class App extends Component {
     this.state = {
       results: null,
       searchKey: '',
-      searchTerm: DEFAULT_QUERY
+      searchTerm: DEFAULT_QUERY,
+      error: null,
     };
 
     this.needsToSearchTopStories = this.needsToSearchTopStories.bind(this)
@@ -61,7 +62,7 @@ class App extends Component {
     fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}&${PARAM_HPP}${DEFAULT_HPP}`)
       .then(response => response.json())
       .then(result => this.setSearchTopStories(result))
-      .catch(error => error)
+      .catch(error => this.setState({ error }))
   }
 
   onDismiss (id) {
@@ -93,7 +94,8 @@ class App extends Component {
   }
 
   render () {
-    const { searchTerm, results, searchKey } = this.state;
+    const { searchTerm, results, searchKey, error } = this.state
+
     const page = (results && results[searchKey] && results[searchKey].page) || []
 
     const list = (results && results[searchKey] && results[searchKey].hits) || []
@@ -102,12 +104,19 @@ class App extends Component {
       return null
     }
 
+    if (error) {
+      return <p>Something went wrong.</p>
+    }
+
     return (
       <div className="page">
         <div className="interactions">
           <Search value={searchTerm} onChange={this.onSearchChange} onSubmit={this.onSearchSubmit}>Search</Search>
         </div>
-        { list && <Table list={list} pattern={searchTerm} onDismiss={this.onDismiss} /> }
+        { error ?
+        <div className="interactions">
+          <p>Something went wrong.</p>
+        </div> : <Table list={list} pattern={searchTerm} onDismiss={this.onDismiss} /> }
         <div className="interactions">
           <Button onClick={() => this.fetchSearchTopStories(searchTerm, page + 1)}>
             More
