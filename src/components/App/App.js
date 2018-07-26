@@ -123,7 +123,7 @@ class App extends Component {
         { error ?
         <div className="interactions">
           <p>Something went wrong.</p>
-        </div> : <Table list={list} pattern={searchTerm} onDismiss={this.onDismiss} /> }
+        </div> : <Table list={list} onDismiss={this.onDismiss} /> }
         <div className="interactions">
           <Button onClick={() => this.fetchSearchTopStories(searchTerm, page + 1)}>
             More
