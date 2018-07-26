@@ -45,7 +45,7 @@ exports[`Button has a valid snapshot 1`] = `
   onClick={undefined}
   type="button"
 >
-  Give Me More
+  Give me a More
 </button>
 `;
 
@@ -68,7 +68,9 @@ exports[`Table has a valid snapshot 1`] = `
 <div
   className="table"
 >
-  <div>
+  <div
+    className="table-row"
+  >
     <span
       style={
         Object {
@@ -129,7 +131,9 @@ exports[`Table has a valid snapshot 1`] = `
       </button>
     </span>
   </div>
-  <div>
+  <div
+    className="table-row"
+  >
     <span
       style={
         Object {
