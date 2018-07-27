@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faStroopwafel } from '@fortawesome/free-solid-svg-icons'
 import './App.css';
 import Search from '../Search'
 import Table from '../Table'
@@ -15,6 +18,10 @@ import {
   PARAM_HPP
 } from '../../constants'
 
+library.add(faStroopwafel)
+
+const Loading = () => <div><FontAwesomeIcon icon="fas fa-spinner" /></div>
+
 class App extends Component {
   _isMounted = false
 
@@ -25,6 +32,7 @@ class App extends Component {
       searchKey: '',
       searchTerm: DEFAULT_QUERY,
       error: null,
+      isLoading: false,
     };
 
     this.needsToSearchTopStories = this.needsToSearchTopStories.bind(this)
@@ -62,11 +70,14 @@ class App extends Component {
     ]
 
     this.setState({
-      results: { ...results, [searchKey]: { hits: updatedHits, page } }
+      results: { ...results, [searchKey]: { hits: updatedHits, page } },
+      isLoading: false
     })
   }
 
   fetchSearchTopStories (searchTerm, page = 0) {
+    this.setState({ isLoading: true })
+
     axios(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}&${PARAM_HPP}${DEFAULT_HPP}`)
       .then(result => this._isMounted && this.setSearchTopStories(result.data))
       .catch(error => this._isMounted && this.setState({ error }))
@@ -101,7 +112,7 @@ class App extends Component {
   }
 
   render () {
-    const { searchTerm, results, searchKey, error } = this.state
+    const { searchTerm, results, searchKey, error, isLoading } = this.state
 
     const page = (results && results[searchKey] && results[searchKey].page) || []
 
@@ -125,9 +136,13 @@ class App extends Component {
           <p>Something went wrong.</p>
         </div> : <Table list={list} onDismiss={this.onDismiss} /> }
         <div className="interactions">
+        {
+          isLoading?
+          <Loading /> :
           <Button onClick={() => this.fetchSearchTopStories(searchTerm, page + 1)}>
             More
           </Button>
+        }
         </div>
       </div>
 
