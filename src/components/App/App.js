@@ -36,7 +36,6 @@ class App extends Component {
       error: null,
       isLoading: false,
       sortKey: 'NONE',
-      isSortedReverse: false,
     };
 
     this.needsToSearchTopStories = this.needsToSearchTopStories.bind(this)
@@ -45,7 +44,6 @@ class App extends Component {
     this.onSearchChange = this.onSearchChange.bind(this)
     this.onSearchSubmit = this.onSearchSubmit.bind(this)
     this.onDismiss = this.onDismiss.bind(this)
-    this.onSort = this.onSort.bind(this)
   }
 
   componentDidMount () {
@@ -57,11 +55,6 @@ class App extends Component {
 
   componentWillUnmount() {
     this._isMounted = false
-  }
-
-  onSort(sortKey) {
-    const isSortReverse = this.state.sortKey === sortKey && !this.state.isSortReverse
-    this.setState({ sortKey })
   }
 
   needsToSearchTopStories (searchTerm) {
@@ -122,7 +115,7 @@ class App extends Component {
   }
 
   render () {
-    const { searchTerm, results, searchKey, error, isLoading, sortKey, isSortReverse } = this.state
+    const { searchTerm, results, searchKey, error, isLoading } = this.state
 
     const page = (results && results[searchKey] && results[searchKey].page) || []
 
@@ -144,7 +137,7 @@ class App extends Component {
         { error ?
         <div className="interactions">
           <p>Something went wrong.</p>
-        </div> : <Table list={list} sortKey={sortKey} isSortReverse={isSortReverse} onSort={this.onSort} onDismiss={this.onDismiss} /> }
+        </div> : <Table list={list} onDismiss={this.onDismiss} /> }
         <div className="interactions">
          <ButtonWithLoading
           isLoading={isLoading}
